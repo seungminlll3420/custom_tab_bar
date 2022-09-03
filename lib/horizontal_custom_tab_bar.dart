@@ -2,16 +2,13 @@ library custom_tab_bar;
 
 import 'package:flutter/material.dart';
 
-///A row of buttons with animated selection
 class HorozontalAnimatedButtonBar extends StatefulWidget {
-  ///Duration for the selection animation
   final int initialIndex;
   final Duration animationDuration;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
+  final Color? unselectedBackgroundColor;
+  final Color? selectedBackgroundColor;
   final double radius;
 
-  ///A list of [HorozontalButtonBarEntry] to display
   final List<HorozontalButtonBarEntry> children;
   final double innerVerticalPadding;
   final double elevation;
@@ -20,7 +17,6 @@ class HorozontalAnimatedButtonBar extends StatefulWidget {
   final Curve curve;
   final EdgeInsets padding;
 
-  ///Invert color of the child when true
   final bool invertedSelection;
 
   const HorozontalAnimatedButtonBar({
@@ -28,8 +24,8 @@ class HorozontalAnimatedButtonBar extends StatefulWidget {
     required this.initialIndex,
     required this.children,
     this.animationDuration = const Duration(milliseconds: 200),
-    this.backgroundColor,
-    this.foregroundColor,
+    this.unselectedBackgroundColor,
+    this.selectedBackgroundColor,
     this.radius = 0.0,
     this.innerVerticalPadding = 8.0,
     this.elevation = 0,
@@ -58,7 +54,7 @@ class _HorozontalAnimatedButtonBarState
   @override
   Widget build(BuildContext context) {
     Color backgroundColor =
-        widget.backgroundColor ?? Theme.of(context).backgroundColor;
+        widget.unselectedBackgroundColor ?? Theme.of(context).backgroundColor;
     return Padding(
       padding: widget.padding,
       child: LayoutBuilder(
@@ -86,8 +82,8 @@ class _HorozontalAnimatedButtonBarState
                 curve: widget.curve,
                 child: Container(
                   decoration: BoxDecoration(
-                    color:
-                        widget.foregroundColor ?? Theme.of(context).accentColor,
+                    color: widget.selectedBackgroundColor ??
+                        Theme.of(context).colorScheme.secondary,
                     borderRadius:
                         BorderRadius.all(Radius.circular(widget.radius)),
                   ),
@@ -103,9 +99,7 @@ class _HorozontalAnimatedButtonBarState
                               onTap: () {
                                 try {
                                   sideButton.onTap();
-                                } catch (e) {
-                                  print('onTap implementation is missing');
-                                }
+                                } catch (e) {}
                                 setState(() {
                                   _index = i;
                                 });

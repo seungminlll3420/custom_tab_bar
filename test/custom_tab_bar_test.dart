@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:custom_tab_bar/vertical_custom_tab_bar.dart';
-
 void main() {
   test('adds one to input values', () {
     // final calculator = Calculator();

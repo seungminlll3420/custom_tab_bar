@@ -1,17 +1,15 @@
 library custom_tab_bar;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-///A row of buttons with animated selection
 class VerticalAnimatedButtonBar extends StatefulWidget {
-  ///Duration for the selection animation
   final int initialIndex;
   final Duration animationDuration;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
+  final Color? unselectedBackgroundColor;
+  final Color? selectedBackgroundColor;
   final double radius;
 
-  ///A list of [VerticalButtonBarEntry] to display
   final List<VerticalButtonBarEntry> children;
   final double innerHorizontalPadding;
   final double elevation;
@@ -21,7 +19,6 @@ class VerticalAnimatedButtonBar extends StatefulWidget {
   final EdgeInsets padding;
   final double height;
 
-  ///Invert color of the child when true
   final bool invertedSelection;
 
   const VerticalAnimatedButtonBar({
@@ -30,8 +27,8 @@ class VerticalAnimatedButtonBar extends StatefulWidget {
     required this.children,
     required this.height,
     this.animationDuration = const Duration(milliseconds: 200),
-    this.backgroundColor,
-    this.foregroundColor,
+    this.unselectedBackgroundColor,
+    this.selectedBackgroundColor,
     this.radius = 0.0,
     this.innerHorizontalPadding = 8.0,
     this.elevation = 0,
@@ -60,7 +57,7 @@ class _VerticalAnimatedButtonBarState extends State<VerticalAnimatedButtonBar> {
   @override
   Widget build(BuildContext context) {
     Color backgroundColor =
-        widget.backgroundColor ?? Theme.of(context).backgroundColor;
+        widget.unselectedBackgroundColor ?? Theme.of(context).backgroundColor;
     return SizedBox(
       height: widget.height,
       child: Padding(
@@ -90,8 +87,8 @@ class _VerticalAnimatedButtonBarState extends State<VerticalAnimatedButtonBar> {
                   curve: widget.curve,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: widget.foregroundColor ??
-                          Theme.of(context).accentColor,
+                      color: widget.selectedBackgroundColor ??
+                          Theme.of(context).colorScheme.secondary,
                       borderRadius:
                           BorderRadius.all(Radius.circular(widget.radius)),
                     ),
@@ -108,7 +105,9 @@ class _VerticalAnimatedButtonBarState extends State<VerticalAnimatedButtonBar> {
                                   try {
                                     sideButton.onTap();
                                   } catch (e) {
-                                    print('onTap implementation is missing');
+                                    if (kDebugMode) {
+                                      print('onTap implementation is missing');
+                                    }
                                   }
                                   setState(() {
                                     _index = i;
